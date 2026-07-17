@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0b1110">
+    <meta
+      name="description"
+      content="Inscription à la soirée des 5 ans du salon Le Concept, le 25 septembre 2026."
+    >
+    <title>Les 5 ans du Concept</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&amp;family=Italiana&amp;display=swap"
+      rel="stylesheet"
+    >
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="site-header">
+        <a class="brand" href="#top" aria-label="Le Concept, retour en haut">
+          <img src="assets/logo.jpg" alt="Le Concept, esthétique et coiffure">
+        </a>
+        <a class="header-link" href="#inscription">Je m’inscris</a>
+      </header>
+
+      <main id="top">
+        <section class="hero" aria-labelledby="event-title">
+          <div class="hero-date" aria-label="25 septembre 2026">
+            <span class="date-day">25</span>
+            <span class="date-month">Sept.</span>
+            <span class="date-year">2026</span>
+          </div>
+
+          <div class="hero-content">
+            <div class="event-label"><span></span> Soirée VIP</div>
+            <h1 id="event-title">
+              Le Concept fête
+              <em>ses 5 ans</em>
+            </h1>
+            <p class="hero-intro">
+              Cinq années de beauté, de confiance et de belles rencontres.
+              Venez célébrer cette aventure avec toute l’équipe lors d’une
+              soirée imaginée pour vous.
+            </p>
+
+            <div class="event-details">
+              <div>
+                <span class="detail-number">18:30</span>
+                <span class="detail-caption">À partir de</span>
+              </div>
+              <div>
+                <span class="detail-number">100%</span>
+                <span class="detail-caption">Gratuit</span>
+              </div>
+            </div>
+
+            <a class="primary-link" href="#inscription">
+              Réserver ma place
+              <span aria-hidden="true">↘</span>
+            </a>
+          </div>
+
+          <div class="anniversary-mark" aria-hidden="true">
+            <span>5</span>
+            <small>ans</small>
+          </div>
+
+          <div class="free-sticker" aria-label="Événement 100 % gratuit">
+            <span><strong>100%</strong> gratuit</span>
+          </div>
+        </section>
+
+        <section class="invitation" aria-labelledby="invitation-title">
+          <p class="section-index">01 / L’invitation</p>
+          <div class="invitation-copy">
+            <h2 id="invitation-title">Une soirée pour vous dire <em>merci.</em></h2>
+            <div class="invitation-text">
+              <p>
+                Nous vous invitons à partager une soirée conviviale, ponctuée
+                de découvertes, de surprises et de moments privilégiés avec
+                les partenaires du salon.
+              </p>
+              <p>
+                L’occasion de se retrouver autrement et de célébrer ensemble
+                les cinq premières années du Concept.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="registration" id="inscription" aria-labelledby="registration-title">
+          <div class="registration-heading">
+            <p class="section-index">02 / Votre inscription</p>
+            <h2 id="registration-title">Vous serez <em>des nôtres&nbsp;?</em></h2>
+            <p>Vendredi 25 septembre 2026, à partir de 18 h 30.</p>
+          </div>
+
+          <div class="form-card">
+            <form id="registration-form" novalidate>
+              <div class="form-row">
+                <div class="field">
+                  <label for="first-name">Prénom</label>
+                  <input
+                    id="first-name"
+                    name="firstName"
+                    type="text"
+                    autocomplete="given-name"
+                    maxlength="50"
+                    placeholder="Votre prénom"
+                    required
+                  >
+                  <span class="field-error" id="first-name-error"></span>
+                </div>
+
+                <div class="field">
+                  <label for="last-name">Nom</label>
+                  <input
+                    id="last-name"
+                    name="lastName"
+                    type="text"
+                    autocomplete="family-name"
+                    maxlength="50"
+                    placeholder="Votre nom"
+                    required
+                  >
+                  <span class="field-error" id="last-name-error"></span>
+                </div>
+              </div>
+
+              <div class="field people-field">
+                <div>
+                  <label for="party-size">Nombre de personnes</label>
+                  <p>Vous compris</p>
+                </div>
+                <div class="select-wrap">
+                  <select id="party-size" name="partySize" required>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                  </select>
+                  <span aria-hidden="true">⌄</span>
+                </div>
+              </div>
+
+              <button class="submit-button" type="submit">
+                <span class="button-label">Confirmer ma présence</span>
+                <span class="button-arrow" aria-hidden="true">→</span>
+              </button>
+
+              <p class="form-note">
+                Vos informations seront uniquement utilisées pour organiser
+                cette soirée.
+              </p>
+            </form>
+
+            <div class="success-state" id="success-state" hidden tabindex="-1">
+              <div class="success-icon" aria-hidden="true">✓</div>
+              <p class="section-index">Inscription confirmée</p>
+              <h3>Merci <span id="guest-name"></span>.</h3>
+              <p>
+                Nous avons hâte de célébrer les 5 ans du Concept avec vous.
+                Rendez-vous le 25 septembre à partir de 18 h 30.
+              </p>
+              <button class="text-button" id="new-registration" type="button">
+                Modifier les informations
+              </button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <img src="assets/logo.jpg" alt="" aria-hidden="true">
+        <p>Le Concept <span>·</span> Esthétique &amp; coiffure</p>
+        <a href="#top">Retour en haut ↑</a>
+      </footer>
+    </div>
+  </body>
+</html>
