@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install pinned dependencies
+        run: npm ci
+
+      - name: Audit dependencies
+        run: npm audit --audit-level=high
+
+      - name: Test frontend validation
+        run: npm test
+
+      - name: Build frontend
+        run: npm run build && npm run test:build
+        env:
+          VITE_BASE_PATH: /register-le-concept/
+          VITE_CONNECT_SOURCES: http://127.0.0.1:55321
+          VITE_REGISTRATION_ENDPOINT: http://127.0.0.1:55321/functions/v1/register
+          VITE_SUPABASE_PUBLISHABLE_KEY: sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH
+          VITE_SUPABASE_URL: http://127.0.0.1:55321
+          VITE_TURNSTILE_SITE_KEY: 1x00000000000000000000AA
+
+      - name: Start local Supabase
+        run: npx supabase start
+
+      - name: Test database security
+        run: npm run test:db
+
+      - name: Test invite-only authentication
+        run: npm run test:auth
+
+      - name: Test Edge Function integration
+        run: npm run test:function
+
+      - name: Stop local Supabase
+        if: always()
+        run: npx supabase stop

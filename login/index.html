@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8">
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; base-uri 'self'; connect-src 'self' %VITE_CONNECT_SOURCES%; font-src 'self'; form-action 'self'; frame-src 'none'; img-src 'self' data:; object-src 'none'; script-src 'self'; style-src 'self'; worker-src 'none'"
+    >
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="no-referrer">
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <meta name="theme-color" content="#0b1110">
+    <title>Administration · Le Concept</title>
+    <link rel="stylesheet" href="../admin.css">
+    <script type="module" src="../src/login.js"></script>
+  </head>
+  <body class="admin-page">
+    <main class="auth-shell">
+      <a class="admin-brand" href="../" aria-label="Retour au site Le Concept">
+        <img src="../assets/logo.jpg" alt="Le Concept, esthétique et coiffure">
+      </a>
+
+      <section class="auth-card" aria-labelledby="login-title">
+        <p class="admin-eyebrow">Espace privé</p>
+        <h1 id="login-title">Administration</h1>
+        <p class="auth-intro">
+          Recevez un lien de connexion à usage unique sur l’adresse autorisée.
+        </p>
+
+        <form id="login-form" novalidate>
+          <label for="admin-email">Adresse e-mail</label>
+          <input
+            id="admin-email"
+            type="email"
+            autocomplete="email"
+            inputmode="email"
+            maxlength="254"
+            required
+          >
+          <button type="submit">Recevoir le lien sécurisé</button>
+        </form>
+
+        <p class="admin-status" id="login-status" role="status" aria-live="polite"></p>
+      </section>
+    </main>
+  </body>
+</html>

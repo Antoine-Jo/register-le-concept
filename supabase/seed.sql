@@ -1,0 +1,1 @@
+-- Production-like data is intentionally not seeded. Tests create their own rows.

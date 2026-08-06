@@ -1,0 +1,23 @@
+{
+  "name": "register-le-concept",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "admin:create": "node scripts/create-local-admin.mjs",
+    "preview": "vite preview",
+    "test": "node --test",
+    "test:db": "supabase test db",
+    "test:auth": "node scripts/check-auth.mjs",
+    "test:build": "node scripts/check-build.mjs",
+    "test:function": "node scripts/check-function.mjs",
+    "check": "npm test && npm run build && npm run test:build"
+  },
+  "devDependencies": {
+    "@supabase/supabase-js": "2.57.4",
+    "supabase": "2.109.1",
+    "vite": "8.1.5"
+  }
+}

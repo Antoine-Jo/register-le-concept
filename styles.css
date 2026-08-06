@@ -1,3 +1,19 @@
+@font-face {
+  font-display: swap;
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 400 600;
+  src: url("assets/fonts/dm-sans-latin.woff2") format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "Italiana";
+  font-style: normal;
+  font-weight: 400;
+  src: url("assets/fonts/italiana-latin.woff2") format("woff2");
+}
+
 :root {
   color-scheme: dark;
   --ink: #0b1110;
@@ -472,6 +488,26 @@ h2 em {
   font-size: 0.75rem;
   min-height: 1.1rem;
   padding-top: 0.45rem;
+}
+
+.bot-field {
+  height: 1px;
+  left: -10000px;
+  overflow: hidden;
+  position: absolute;
+  width: 1px;
+}
+
+.turnstile-wrap {
+  margin: 1.25rem 0;
+  min-height: 82px;
+}
+
+.form-status {
+  color: #e2a696;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  min-height: 1.25rem;
 }
 
 .people-field {

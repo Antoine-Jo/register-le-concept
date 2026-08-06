@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8">
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; base-uri 'self'; connect-src 'self' %VITE_CONNECT_SOURCES%; font-src 'self'; form-action 'self'; frame-src 'none'; img-src 'self' data:; object-src 'none'; script-src 'self'; style-src 'self'; worker-src 'none'"
+    >
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="no-referrer">
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <meta name="theme-color" content="#0b1110">
+    <title>Connexion · Le Concept</title>
+    <link rel="stylesheet" href="../../admin.css">
+    <script type="module" src="../../src/auth-callback.js"></script>
+  </head>
+  <body class="admin-page">
+    <main class="callback-shell">
+      <div class="callback-mark" aria-hidden="true"></div>
+      <p class="admin-eyebrow">Connexion sécurisée</p>
+      <h1>Vérification en cours</h1>
+      <p class="admin-status" id="callback-status" role="status" aria-live="polite">
+        Validation du lien…
+      </p>
+      <a href="../../login/">Retour à la connexion</a>
+    </main>
+  </body>
+</html>
