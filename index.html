@@ -2,21 +2,20 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8">
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; base-uri 'self'; connect-src 'self' %VITE_CONNECT_SOURCES% https://challenges.cloudflare.com; font-src 'self'; form-action 'self'; frame-src https://challenges.cloudflare.com; img-src 'self' data:; object-src 'none'; script-src 'self' https://challenges.cloudflare.com; style-src 'self'; worker-src 'none'"
+    >
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="no-referrer">
     <meta name="theme-color" content="#0b1110">
     <meta
       name="description"
       content="Inscription à la soirée des 5 ans du salon Le Concept, le 25 septembre 2026."
     >
     <title>Les 5 ans du Concept</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&amp;family=Italiana&amp;display=swap"
-      rel="stylesheet"
-    >
     <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
+    <script src="script.js" type="module"></script>
   </head>
   <body>
     <div class="page-shell">
@@ -52,10 +51,6 @@
                 <span class="detail-number">18:30</span>
                 <span class="detail-caption">À partir de</span>
               </div>
-              <div>
-                <span class="detail-number">100%</span>
-                <span class="detail-caption">Gratuit</span>
-              </div>
             </div>
 
             <a class="primary-link" href="#inscription">
@@ -69,9 +64,6 @@
             <small>ans</small>
           </div>
 
-          <div class="free-sticker" aria-label="Événement 100 % gratuit">
-            <span><strong>100%</strong> gratuit</span>
-          </div>
         </section>
 
         <section class="invitation" aria-labelledby="invitation-title">
@@ -100,34 +92,34 @@
           </div>
 
           <div class="form-card">
-            <form id="registration-form" novalidate>
+            <form id="registration-form" action="#inscription" method="post" novalidate>
               <div class="form-row">
                 <div class="field">
                   <label for="first-name">Prénom</label>
                   <input
                     id="first-name"
-                    name="firstName"
                     type="text"
                     autocomplete="given-name"
                     maxlength="50"
                     placeholder="Votre prénom"
                     required
+                    aria-describedby="first-name-error"
                   >
-                  <span class="field-error" id="first-name-error"></span>
+                  <span class="field-error" id="first-name-error" aria-live="polite"></span>
                 </div>
 
                 <div class="field">
                   <label for="last-name">Nom</label>
                   <input
                     id="last-name"
-                    name="lastName"
                     type="text"
                     autocomplete="family-name"
                     maxlength="50"
                     placeholder="Votre nom"
                     required
+                    aria-describedby="last-name-error"
                   >
-                  <span class="field-error" id="last-name-error"></span>
+                  <span class="field-error" id="last-name-error" aria-live="polite"></span>
                 </div>
               </div>
 
@@ -137,7 +129,7 @@
                   <p>Vous compris</p>
                 </div>
                 <div class="select-wrap">
-                  <select id="party-size" name="partySize" required>
+                  <select id="party-size" required aria-describedby="party-size-error">
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -152,8 +144,21 @@
                   <span aria-hidden="true">⌄</span>
                 </div>
               </div>
+              <span class="field-error" id="party-size-error" aria-live="polite"></span>
 
-              <button class="submit-button" type="submit">
+              <div class="bot-field" aria-hidden="true">
+                <label for="website">Ne pas remplir ce champ</label>
+                <input id="website" type="text" tabindex="-1" autocomplete="off">
+              </div>
+
+              <div class="turnstile-wrap">
+                <div id="turnstile-widget"></div>
+                <span class="field-error" id="turnstile-error" aria-live="polite"></span>
+              </div>
+
+              <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+
+              <button class="submit-button" type="submit" disabled>
                 <span class="button-label">Confirmer ma présence</span>
                 <span class="button-arrow" aria-hidden="true">→</span>
               </button>
@@ -172,9 +177,6 @@
                 Nous avons hâte de célébrer les 5 ans du Concept avec vous.
                 Rendez-vous le 25 septembre à partir de 18 h 30.
               </p>
-              <button class="text-button" id="new-registration" type="button">
-                Modifier les informations
-              </button>
             </div>
           </div>
         </section>
