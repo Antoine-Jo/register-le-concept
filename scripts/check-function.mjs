@@ -7,24 +7,28 @@ const origin = "http://localhost:5173";
 const functionEnvFile = !process.env.CI && existsSync("supabase/functions/register/.env.local")
   ? "supabase/functions/register/.env.local"
   : "supabase/functions/register/test.env";
-const cleanup = spawnSync(
-  "docker",
-  [
-    "exec",
-    "supabase_db_register-le-concept",
-    "psql",
-    "-U",
-    "postgres",
-    "-d",
-    "postgres",
-    "-c",
-    "truncate private.registration_rate_limits",
-  ],
-  { encoding: "utf8" },
-);
-if (cleanup.status !== 0) {
-  throw new Error(`Unable to prepare local rate limits: ${cleanup.stderr}`);
+function clearRateLimits() {
+  const cleanup = spawnSync(
+    "docker",
+    [
+      "exec",
+      "supabase_db_register-le-concept",
+      "psql",
+      "-U",
+      "postgres",
+      "-d",
+      "postgres",
+      "-c",
+      "truncate private.registration_rate_limits",
+    ],
+    { encoding: "utf8" },
+  );
+  if (cleanup.status !== 0) {
+    throw new Error(`Unable to prepare local rate limits: ${cleanup.stderr}`);
+  }
 }
+
+clearRateLimits();
 
 const supabase = spawn(
   "./node_modules/.bin/supabase",
@@ -102,6 +106,7 @@ try {
 
   console.log("Edge Function integration checks passed (403, 201, 409, 429).");
 } finally {
+  clearRateLimits();
   supabase.kill("SIGINT");
   await Promise.race([
     new Promise((resolve) => supabase.once("exit", resolve)),
