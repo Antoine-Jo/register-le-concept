@@ -23,18 +23,27 @@ form.addEventListener("submit", async (event) => {
   submitButton.textContent = "Envoi en cours…";
 
   try {
-    await supabase.auth.signInWithOtp({
+    const { error } = await supabase.auth.signInWithOtp({
       email: emailInput.value.trim(),
       options: {
         emailRedirectTo: appUrl("auth/callback/"),
         shouldCreateUser: false,
       },
     });
-  } finally {
+
+    if (error?.status === 429) {
+      status.textContent =
+        "Trop de liens ont été demandés. Attendez une minute avant de réessayer.";
+      return;
+    }
+
     form.reset();
     status.className = "admin-status is-success";
     status.textContent =
       "Si cette adresse est autorisée, un lien de connexion vient d’être envoyé. Il reste valable 10 minutes.";
+  } catch {
+    status.textContent = "Le service de connexion est momentanément inaccessible. Réessayez plus tard.";
+  } finally {
     submitButton.disabled = false;
     submitButton.textContent = "Recevoir le lien sécurisé";
   }

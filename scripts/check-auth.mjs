@@ -59,21 +59,20 @@ try {
   const messageBody = await messageResponse.json();
   const emailContent = `${messageBody.Text}\n${messageBody.HTML}`.replaceAll("&amp;", "&");
   const actionLink = emailContent.match(
-    /https?:\/\/[^\s"'<>)]*\/auth\/v1\/verify\?[^\s"'<>)]*/u,
+    /https?:\/\/[^\s"'<>)]*\/auth\/callback\/\?token_hash=[^\s"'<>)]*/u,
   )?.[0];
   assert.ok(actionLink, "the auth email must contain a sign-in link");
 
-  const verification = await fetch(actionLink, { redirect: "manual" });
-  const location = verification.headers.get("location");
-  assert.ok(location, "the verification endpoint must redirect to the callback");
+  const callback = new URL(actionLink);
+  assert.equal(`${callback.origin}${callback.pathname}`, callbackUrl);
+  const tokenHash = callback.searchParams.get("token_hash");
+  assert.ok(tokenHash, "the callback must contain a hashed email token");
 
-  const redirect = new URL(location);
-  assert.equal(`${redirect.origin}${redirect.pathname}`, callbackUrl);
-  const code = redirect.searchParams.get("code");
-  assert.ok(code, "the PKCE callback must contain an authorization code");
-
-  const { error: exchangeError } = await client.auth.exchangeCodeForSession(code);
-  assert.equal(exchangeError, null, "the PKCE code must create a session");
+  const { error: exchangeError } = await client.auth.verifyOtp({
+    token_hash: tokenHash,
+    type: "email",
+  });
+  assert.equal(exchangeError, null, "the hashed email token must create a session");
 
   const { error: dashboardError } = await client.rpc("registration_summary");
   assert.equal(dashboardError, null, "an allowlisted authenticated user can read the dashboard");
@@ -96,7 +95,7 @@ try {
     "an unknown login address must not be persisted",
   );
 
-  console.log("Auth integration checks passed (magic link, PKCE, allowlist, signup lock).");
+  console.log("Auth integration checks passed (magic link, token hash, allowlist, signup lock).");
 } finally {
   await client.auth.signOut({ scope: "local" });
   await admin.auth.admin.deleteUser(created.user.id);
