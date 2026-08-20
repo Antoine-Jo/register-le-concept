@@ -85,8 +85,8 @@ on conflict (user_id) do nothing;
 insert into private.registrations (first_name, last_name, party_size)
 values ('Dashboard', 'Viewer', 2);
 
-insert into private.registrations (first_name, last_name, party_size)
-select 'Load' || value, 'DashboardTest', 1
+insert into private.registrations (first_name, last_name, party_size, created_at)
+select 'Load' || value, 'DashboardTest', 1, now() - interval '1 minute'
 from generate_series(1, 101) as value;
 
 set local role authenticated;
