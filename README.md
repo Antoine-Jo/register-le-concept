@@ -153,7 +153,7 @@ VITE_SUPABASE_PUBLISHABLE_KEY=cle-publique-supabase
 
 11. Rejouer les tests sur un environnement de préproduction avant d'ouvrir le formulaire.
 
-Le déploiement GitHub Pages n'est volontairement pas automatisé tant que le projet Supabase Cloud et l'hébergeur frontend final ne sont pas choisis. Le mode Pages actuel sert les sources sans build et devra être remplacé par un déploiement de `dist/` avant le prochain push en production.
+Le déploiement GitHub Pages construit et publie automatiquement `dist/` depuis `main` avec les variables publiques configurées dans GitHub Actions.
 
 ## Exploitation
 
@@ -166,11 +166,20 @@ where user_id = 'UUID_DE_L_UTILISATEUR';
 
 Le dashboard ne permet aucune modification ni export. Si un export CSV est ajouté ultérieurement, les cellules commençant par `=`, `+`, `-` ou `@` devront être neutralisées avant ouverture dans un tableur.
 
+Les inscriptions et les compteurs de sécurité doivent être supprimés au plus tard le 31 octobre 2026 depuis l'éditeur SQL Supabase :
+
+```sql
+truncate table private.registrations;
+truncate table private.registration_rate_limits;
+```
+
+Vérifier immédiatement après l'opération que les deux tables sont vides. Cette suppression est irréversible ; conserver uniquement un décompte anonyme si un bilan de l'événement est nécessaire.
+
 La production devrait idéalement utiliser un sous-domaine administratif séparé avec CSP en en-tête et `frame-ancestors 'none'`. Sur `antoine-jo.github.io`, tous les projets du compte partagent la même origine ; l'usage de `sessionStorage` réduit l'exposition mais ne remplace pas cette isolation. Ce choix d'hébergement est un prérequis de sécurité à valider avant la publication du dashboard.
 
 Après création du projet Cloud, vérifier manuellement dans Auth que les inscriptions globales et anonymes sont désactivées. `supabase db push` applique les migrations SQL mais ne garantit pas à lui seul ces réglages opérationnels.
 
-Avant publication, compléter l'information RGPD avec l'identité du responsable, le contact, la base légale et une date de suppression. Après l'événement, supprimer les inscriptions selon cette durée de conservation.
+Les mentions légales et l'information RGPD sont publiées dans `/mentions-legales/` et `/donnees-personnelles/`. Toute modification de finalité, de prestataire ou de durée de conservation doit être répercutée sur ces pages avant sa mise en œuvre.
 
 ## Limite fonctionnelle connue
 

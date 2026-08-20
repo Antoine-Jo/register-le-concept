@@ -4,7 +4,13 @@ import { fileURLToPath } from "node:url";
 const root = fileURLToPath(new URL(".", import.meta.url));
 
 function redirectDirectoryRoutes() {
-  const routes = new Set(["/login", "/dashboard", "/auth/callback"]);
+  const routes = new Set([
+    "/login",
+    "/dashboard",
+    "/auth/callback",
+    "/mentions-legales",
+    "/donnees-personnelles",
+  ]);
   const middleware = (request, response, next) => {
     const url = new URL(request.url, "http://localhost");
     if (!routes.has(url.pathname)) {
@@ -38,6 +44,8 @@ export default defineConfig({
         login: `${root}login/index.html`,
         dashboard: `${root}dashboard/index.html`,
         callback: `${root}auth/callback/index.html`,
+        legal: `${root}mentions-legales/index.html`,
+        privacy: `${root}donnees-personnelles/index.html`,
       },
     },
     target: "es2022",
