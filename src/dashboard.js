@@ -16,6 +16,15 @@ const authChannel = "BroadcastChannel" in window
 let offset = 0;
 let loading = false;
 
+async function callRpc(name, parameters) {
+  let result = await supabase.rpc(name, parameters);
+  if (result.status !== 401) return result;
+
+  await new Promise((resolve) => setTimeout(resolve, 300));
+  result = await supabase.rpc(name, parameters);
+  return result;
+}
+
 function clearPrivateContent() {
   tableBody.replaceChildren();
   registrationCount.textContent = "—";
@@ -50,12 +59,13 @@ async function signOutAndRedirect() {
 }
 
 async function loadSummary() {
-  const { data, error } = await supabase.rpc("registration_summary");
-  if (error) throw error;
+  const { data, error } = await callRpc("registration_summary");
+  if (error) return false;
 
   const summary = normalizeSummary(data?.[0]);
   registrationCount.textContent = String(summary.registrationCount);
   participantCount.textContent = String(summary.participantCount);
+  return true;
 }
 
 async function loadRegistrations() {
@@ -65,7 +75,7 @@ async function loadRegistrations() {
   status.textContent = offset === 0 ? "Chargement des inscriptions…" : "Chargement…";
 
   try {
-    const { data, error } = await supabase.rpc("list_registrations", {
+    const { data, error } = await callRpc("list_registrations", {
       p_limit: PAGE_SIZE,
       p_offset: offset,
     });
@@ -76,9 +86,11 @@ async function loadRegistrations() {
     emptyState.hidden = offset !== 0;
     loadMoreButton.hidden = data.length < PAGE_SIZE;
     status.textContent = "";
+    return true;
   } catch {
     status.textContent = "Les inscriptions ne peuvent pas être chargées.";
     loadMoreButton.hidden = true;
+    return false;
   } finally {
     loading = false;
     loadMoreButton.disabled = false;
@@ -93,10 +105,12 @@ async function initializeDashboard() {
     return;
   }
 
-  try {
-    await Promise.all([loadSummary(), loadRegistrations()]);
-  } catch {
-    await signOutAndRedirect();
+  const [summaryLoaded, registrationsLoaded] = await Promise.all([
+    loadSummary(),
+    loadRegistrations(),
+  ]);
+  if (!summaryLoaded && registrationsLoaded) {
+    status.textContent = "Les totaux sont momentanément indisponibles.";
   }
 }
 
