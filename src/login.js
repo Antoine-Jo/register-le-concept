@@ -40,7 +40,7 @@ form.addEventListener("submit", async (event) => {
     form.reset();
     status.className = "admin-status is-success";
     status.textContent =
-      "Si cette adresse est autorisée, un lien de connexion vient d’être envoyé. Il reste valable 10 minutes.";
+      "Demande prise en compte. Seules les adresses autorisées reçoivent un lien de connexion valable 10 minutes.";
   } catch {
     status.textContent = "Le service de connexion est momentanément inaccessible. Réessayez plus tard.";
   } finally {
